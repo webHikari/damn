@@ -1,0 +1,92 @@
+:root {
+  --switch-duration: 1000ms;
+  --switch-name: theme-transition;
+  --mask-image: url('/assets/shigure-ui.webp');
+  
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --button-bg: #f0f0f0;
+  --button-hover: #e0e0e0;
+}
+
+.dark-theme {
+  --background-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --button-bg: #333333;
+  --button-hover: #444444;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.theme-switch-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--button-bg);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+  z-index: 1000;
+}
+
+.theme-switch-button:hover {
+  background-color: var(--button-hover);
+}
+
+.theme-switch-button svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-color);
+}
+
+@keyframes mask-animation {
+  0% {
+    mask-size: 0;
+  }
+  10% {
+    mask-size: 50vmax;
+  }
+  90% {
+    mask-size: 50vmax;
+  }
+  100% {
+    mask-size: 2000vmax;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 2;
+    animation-name: mask-animation;
+    animation-duration: var(--switch-duration);
+    animation-timing-function: ease-in-out;
+    mask-image: var(--mask-image);
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+
+  .dark-theme::view-transition-new(root) {
+    animation-name: mask-animation;
+  }
+}
